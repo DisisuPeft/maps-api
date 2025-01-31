@@ -42,7 +42,7 @@ ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 # Application definition
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "autenticacion.authenticate.CustomJWTAuthentication",
+        "core.authservice.authentication.ServiceJWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -67,7 +67,11 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "corsheaders",
-    "autenticacion",
+    "tasks",
+    "userlog",
+    "userprofile",
+    "vehicles",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +82,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.authservice.middleware.ServiceAuthMiddleware",
 ]
 
 ROOT_URLCONF = "auth.urls"
@@ -107,7 +112,7 @@ WSGI_APPLICATION = "auth.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "users",
+        "NAME": "map_street_db",
         "USER": "auth",
         "PASSWORD": "@dmin123",
         "HOST": "localhost",
@@ -176,6 +181,7 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:3000",
     # 'http://localhost:5173'
+    "http://localhost:3000"
 ]
 
 STATIC_URL = "static/"
@@ -184,4 +190,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_USER_MODEL = "autenticacion.UserCustomize"
+# AUTH_USER_MODEL = "autenticacion.UserCustomize"
+AUTH_SERVICE_URL = "https://daniel2408.pythonanywhere.com"

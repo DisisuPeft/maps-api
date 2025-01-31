@@ -20,6 +20,7 @@ from rest_framework_simplejwt.views import (
 )
 from django.conf import settings
 from rest_framework.views import APIView
+from .authenticate import CustomJWTAuthentication
 
 
 class RegisterView(APIView):
@@ -119,6 +120,8 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 
 class CustomTokenVerifyView(TokenVerifyView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         access_token = request.COOKIES.get("access")
 
@@ -129,7 +132,8 @@ class CustomTokenVerifyView(TokenVerifyView):
 
 
 class CheckUser(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomJWTAuthentication]
 
     def get(self, request, *args, **kwargs):
         auth = request.user
@@ -151,6 +155,8 @@ class CheckUser(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_204_NO_CONTENT)
         response.delete_cookie("access")
