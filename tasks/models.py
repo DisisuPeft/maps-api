@@ -23,6 +23,8 @@ class Plan(models.Model):
 
 
 class Task(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
     origin = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     destination = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
@@ -39,9 +41,9 @@ class Task(models.Model):
         max_digits=10, decimal_places=2, null=True, blank=True
     )
     vehicles = models.ManyToManyField(Vehicle, related_name="vehicles")
-    plans = models.ForeignKey(Plan, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    plans = models.ForeignKey(Plan, on_delete=models.CASCADE, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
 
 class Optimization(models.Model):
